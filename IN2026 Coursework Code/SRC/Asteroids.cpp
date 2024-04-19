@@ -20,6 +20,7 @@ Asteroids::Asteroids(int argc, char *argv[])
 {
 	mLevel = 0;
 	mAsteroidCount = 0;
+	gameStarted = false;
 }
 
 /** Destructor. */
@@ -58,14 +59,20 @@ void Asteroids::Start()
 	Animation *asteroid1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("asteroid1", 128, 8192, 128, 128, "asteroid1_fs.png");
 	Animation *spaceship_anim = AnimationManager::GetInstance().CreateAnimationFromFile("spaceship", 128, 128, 128, 128, "spaceship_fs.png");
 
-	// Create a spaceship and add it to the world
-	mGameWorld->AddObject(CreateSpaceship());
-	// Create some asteroids and add them to the world
-	CreateAsteroids(10);
+	//make sure that the in game objects are only created after the start screen is passed
+	if (gameStarted) {
 
-	//Create the GUI
-	CreateGUI();
+		// Create a spaceship and add it to the world
+		mGameWorld->AddObject(CreateSpaceship());
+		// Create some asteroids and add them to the world
+		CreateAsteroids(10);
 
+		//Create the GUI
+		CreateGUI();
+	}
+	else {
+		CreateStartScreen();
+	}
 	// Add a player (watcher) to the game world
 	mGameWorld->AddListener(&mPlayer);
 
@@ -91,6 +98,10 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 	{
 	case ' ':
 		mSpaceship->Shoot();
+		break;
+		//If s is clicked then the game should start
+	case 's':
+		gameStarted = true; 
 		break;
 	default:
 		break;
@@ -292,6 +303,21 @@ shared_ptr<GameObject> Asteroids::CreateExplosion()
 	return explosion;
 }
 
+void Asteroids::CreateStartScreen() 
+{
+	// Add a (transparent) border around the edge of the game display
+	mGameDisplay->GetContainer()->SetBorder(GLVector2i(10, 10));
+	// Create a new GUILabel and wrap it up in a shared_ptr
+	mStartLabel = make_shared<GUILabel>("Click s to Start!");
+	// Set the vertical alignment of the label to GUI_VALIGN_MIDDLE
+	mStartLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
+	//Set the horizontal alignment of the lable to GUI_HALIGN_CENTER
+	mStartLabel->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
+	// Add the GUILabel to the GUIComponent  
+	shared_ptr<GUIComponent> start_component
+		= static_pointer_cast<GUIComponent>(mStartLabel);
+	mGameDisplay->GetContainer()->AddComponent(start_component, GLVector2f(0.0f, 1.0f));
 
+}
 
 

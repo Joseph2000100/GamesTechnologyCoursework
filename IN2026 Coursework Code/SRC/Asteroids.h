@@ -22,7 +22,7 @@ public:
 
 	virtual void Start(void);
 	virtual void Stop(void);
-
+	
 	// Declaration of IKeyboardListener interface ////////////////////////////////
 
 	void OnKeyPressed(uchar key, int x, int y);
@@ -52,12 +52,14 @@ private:
 	shared_ptr<GUILabel> mScoreLabel;
 	shared_ptr<GUILabel> mLivesLabel;
 	shared_ptr<GUILabel> mGameOverLabel;
+	shared_ptr<GUILabel> mStartLabel;
 
 	uint mLevel;
 	uint mAsteroidCount;
 
 	void ResetSpaceship();
 	shared_ptr<GameObject> CreateSpaceship();
+	void CreateStartScreen();
 	void CreateGUI();
 	void CreateAsteroids(const uint num_asteroids);
 	shared_ptr<GameObject> CreateExplosion();
@@ -68,6 +70,7 @@ private:
 
 	ScoreKeeper mScoreKeeper;
 	Player mPlayer;
+	bool gameStarted;
 };
 
 #endif
