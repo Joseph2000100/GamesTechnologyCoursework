@@ -1,9 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\SRC",
     "\\VC",
     "\\VC\\Asteroids"
   ],
-  "SelectedNode": "\\VC\\Asteroids\\Asteroids.sln",
+  "SelectedNode": "\\SRC\\MAIN.CPP",
   "PreviewInSolutionExplorer": false
 }
