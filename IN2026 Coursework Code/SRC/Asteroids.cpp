@@ -18,8 +18,6 @@
 Asteroids::Asteroids(int argc, char *argv[])
 	: GameSession(argc, argv)
 {
-	mLevel = 0;
-	mAsteroidCount = 0;
 	inGame = false;
 }
 
@@ -28,11 +26,27 @@ Asteroids::~Asteroids(void)
 {
 }
 
+void Asteroids::startScreen()
+{
+	while (inGame == false)
+	{
+		createStartGUI();
+		while (!mPlayer.isName())
+		{
+
+		}
+	}
+}
+
 // PUBLIC INSTANCE METHODS ////////////////////////////////////////////////////
 
 /** Start an asteroids game. */
 void Asteroids::Start()
 {
+	// reset the level  and asteroid count at the start of a new game
+	mLevel = 0;
+	mAsteroidCount = 0;
+
 	// Create a shared pointer for the Asteroids game object - DO NOT REMOVE
 	shared_ptr<Asteroids> thisPtr = shared_ptr<Asteroids>(this);
 
@@ -159,12 +173,24 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 
 void Asteroids::OnTimer(int value)
 {
+	if (value == SHOW_DEMO_MODE)
+	{
+
+	}
+	if (value == CREATE_NEW_PLAYER)
+	{
+
+	}
 	if (value == SHOW_START_SCREEN)
 	{
 		mGameOverLabel->SetVisible(false);
 		mStartLabel->SetVisible(true);
 	}
-	if (value == CREATE_NEW_PLAYER)
+	if (value == START_NEW_GAME)
+	{
+
+	}
+	if (value == USE_LIFE)
 	{
 		mSpaceship->Reset();
 		mGameWorld->AddObject(mSpaceship);
@@ -180,6 +206,10 @@ void Asteroids::OnTimer(int value)
 	if (value == SHOW_GAME_OVER)
 	{
 		mGameOverLabel->SetVisible(true);
+	}
+	if (value == SHOW_HIGH_SCORE)
+	{
+
 	}
 
 }
@@ -220,6 +250,11 @@ void Asteroids::CreateAsteroids(const uint num_asteroids)
 		asteroid->SetScale(0.2f);
 		mGameWorld->AddObject(asteroid);
 	}
+}
+
+void Asteroids::CreateStartGUI()
+{
+
 }
 
 void Asteroids::CreateGUI()
@@ -297,7 +332,7 @@ void Asteroids::OnPlayerKilled(int lives_left)
 
 	if (lives_left > 0) 
 	{ 
-		SetTimer(1000, CREATE_NEW_PLAYER); 
+		SetTimer(1000, USE_LIFE);
 	}
 	else
 	{

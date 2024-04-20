@@ -20,8 +20,16 @@ int main(int argc, char* argv[])
 	GlutSession::GetInstance().Init(argc, argv);
 	// Create a new asteroids game
 	Asteroids asteroids(argc, argv);
-	// Start the asteroids game
-	asteroids.Start();
 
+	while (true) {
+		if (asteroids.inGame == false)//Start the asteroid application
+		{
+			asteroids.startScreen();
+		}
+		else// Start the asteroids game
+		{
+			asteroids.Start();
+		}
+	}
 	return 0;
 }
