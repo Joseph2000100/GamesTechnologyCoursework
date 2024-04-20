@@ -39,9 +39,20 @@ public:
 			(*lit)->OnPlayerKilled(mLives);
 		}
 	}
+	string getName() {
+		return name;
+	}
+	void setName(string s) {
+		name = s;
+	}
+	bool isName() {
+		if (name == "") return false;
+		else return true;
+	}
 
 private:
 	int mLives;
+	string name = "";
 
 	typedef std::list< shared_ptr<IPlayerListener> > PlayerListenerList;
 

@@ -20,8 +20,11 @@ public:
 	Asteroids(int argc, char *argv[]);
 	virtual ~Asteroids(void);
 
+	void startScreen(void);
 	virtual void Start(void);
 	virtual void Stop(void);
+
+	bool inGame;
 	
 	// Declaration of IKeyboardListener interface ////////////////////////////////
 
@@ -59,19 +62,25 @@ private:
 
 	void ResetSpaceship();
 	shared_ptr<GameObject> CreateSpaceship();
-	void CreateStartScreen();
+	void CreateStartGUI();
 	void CreateGUI();
 	void CreateAsteroids(const uint num_asteroids);
 	shared_ptr<GameObject> CreateExplosion();
 	
-	const static uint SHOW_GAME_OVER = 0;
-	const static uint START_NEXT_LEVEL = 1;
+	// States that  the application can be in
+	const static uint SHOW_DEMO_MODE = 4;
 	const static uint CREATE_NEW_PLAYER = 2;
 	const static uint SHOW_START_SCREEN = 3;
+	const static uint START_NEW_GAME = 6;
+	const static uint USE_LIFE = 7;
+	const static uint START_NEXT_LEVEL = 1;
+	const static uint SHOW_GAME_OVER = 0;
+	const static uint SHOW_HIGH_SCORE = 5;
+	
 
 	ScoreKeeper mScoreKeeper;
-	Player mPlayer;
-	bool inGame;
+	Player mPlayer = Player();
+	
 };
 
 #endif
