@@ -9,6 +9,8 @@
 #include "ScoreKeeper.h"
 #include "Player.h"
 #include "IPlayerListener.h"
+#include "GUIComponent.h"
+#include "GUIContainer.h"
 
 class GameObject;
 class Spaceship;
@@ -20,12 +22,11 @@ public:
 	Asteroids(int argc, char *argv[]);
 	virtual ~Asteroids(void);
 
-	void startScreen(void);
 	virtual void Start(void);
 	virtual void Stop(void);
 
-	bool inGame;
-	
+	enum State{demoMode,noName, startMode, gameMode, highScoreMode};
+
 	// Declaration of IKeyboardListener interface ////////////////////////////////
 
 	void OnKeyPressed(uchar key, int x, int y);
@@ -50,32 +51,42 @@ public:
 	// Override the default implementation of ITimerListener ////////////////////
 	void OnTimer(int value);
 
+	State getState() { return state; }
+
+	char const* getName() { return name; }
+	void setName(char const* n) { name = n; }
+
 private:
 	shared_ptr<Spaceship> mSpaceship;
 	shared_ptr<GUILabel> mScoreLabel;
 	shared_ptr<GUILabel> mLivesLabel;
 	shared_ptr<GUILabel> mGameOverLabel;
 	shared_ptr<GUILabel> mStartLabel;
+	shared_ptr<GUILabel> mHighScoreLabel;
+	shared_ptr<GUILabel> mNewPlayerLabel;
+	shared_ptr<GUILabel> mHighScoreContentLabel;
+
 
 	uint mLevel;
 	uint mAsteroidCount;
+	State state;
+	char const* name;
 
 	void ResetSpaceship();
 	shared_ptr<GameObject> CreateSpaceship();
-	void CreateStartGUI();
 	void CreateGUI();
 	void CreateAsteroids(const uint num_asteroids);
 	shared_ptr<GameObject> CreateExplosion();
 	
 	// States that  the application can be in
-	const static uint SHOW_DEMO_MODE = 4;
-	const static uint CREATE_NEW_PLAYER = 2;
-	const static uint SHOW_START_SCREEN = 3;
-	const static uint START_NEW_GAME = 6;
-	const static uint USE_LIFE = 7;
-	const static uint START_NEXT_LEVEL = 1;
-	const static uint SHOW_GAME_OVER = 0;
-	const static uint SHOW_HIGH_SCORE = 5;
+	const static uint SHOW_DEMO_MODE = 0;
+	const static uint CREATE_NEW_PLAYER = 1;
+	const static uint SHOW_START_SCREEN = 2;
+	const static uint START_NEW_GAME = 3;
+	const static uint USE_LIFE = 4;
+	const static uint START_NEXT_LEVEL = 5;
+	const static uint SHOW_GAME_OVER = 6;
+	const static uint SHOW_HIGH_SCORE = 7;
 	
 
 	ScoreKeeper mScoreKeeper;

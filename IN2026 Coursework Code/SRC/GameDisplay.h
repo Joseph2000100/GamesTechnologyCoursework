@@ -24,7 +24,8 @@ public:
 	int GetWidth() { return mWidth; }
 	int GetHeight() { return mHeight; }
 
-	GUIContainer *GetContainer() { return &mContainer; }
+	GUIContainer* GetContainer() { return &mContainer; }
+
 
 protected:
 	int mWidth;

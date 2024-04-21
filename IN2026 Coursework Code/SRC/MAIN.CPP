@@ -21,15 +21,8 @@ int main(int argc, char* argv[])
 	// Create a new asteroids game
 	Asteroids asteroids(argc, argv);
 
-	while (true) {
-		if (asteroids.inGame == false)//Start the asteroid application
-		{
-			asteroids.startScreen();
-		}
-		else// Start the asteroids game
-		{
-			asteroids.Start();
-		}
-	}
+	while (true)asteroids.Start();
+	
+
 	return 0;
 }
