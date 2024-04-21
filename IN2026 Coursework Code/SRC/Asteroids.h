@@ -55,8 +55,8 @@ public:
 
 	State getState() { return state; }
 
-	char const* getName() { return name; }
-	void setName(char const* n) { name = n; }
+	string getName() { return name; }
+	void setName(string n) { name = n; }
 
 private:
 	shared_ptr<Spaceship> mSpaceship;
@@ -73,7 +73,7 @@ private:
 	uint mLevel;
 	uint mAsteroidCount;
 	State state;
-	char const* name = NULL;
+	string name = "";
 
 	void ResetSpaceship();
 	shared_ptr<GameObject> CreateSpaceship();
