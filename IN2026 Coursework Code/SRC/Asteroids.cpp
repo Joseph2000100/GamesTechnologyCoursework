@@ -22,7 +22,7 @@ Asteroids::Asteroids(int argc, char *argv[])
 	// reset the level  and asteroid count at the start of a new game
 	mLevel = 0;
 	mAsteroidCount = 0;
-	state = demoMode;
+	state = noName;
 }
 
 /** Destructor. */
@@ -74,13 +74,13 @@ void Asteroids::Start()
 	//Create the GUI
 	CreateGUI();
 	
-	mNewPlayerLabel->SetVisible(true);
+	//mNewPlayerLabel->SetVisible(true);
 
 	// Add a player (watcher) to the game world
-	mGameWorld->AddListener(&mPlayer);
+	//mGameWorld->AddListener(&mPlayer);
 
 	// Add this class as a listener of the player
-	mPlayer.AddListener(thisPtr);
+	//mPlayer.AddListener(thisPtr);
 	
 	// Start the game
 	GameSession::Start();
@@ -110,6 +110,7 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 			mSpaceship->Shoot();
 			break;
 		}
+		break;
 	case noName:
 		setName(getName() + key);
 		break;
@@ -132,6 +133,7 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 			SetTimer(500, SHOW_HIGH_SCORE);
 			break;
 		}
+		break;
 	case highScoreMode:
 		//todo: add method to make start screen return
 		break;
@@ -146,14 +148,29 @@ void Asteroids::OnKeyReleased(uchar key, int x, int y) {}
 
 void Asteroids::OnSpecialKeyPressed(int key, int x, int y)
 {
-	switch (key)
+	switch (state)
 	{
-	// If up arrow key is pressed start applying forward thrust
-	case GLUT_KEY_UP: mSpaceship->Thrust(10); break;
-	// If left arrow key is pressed start rotating anti-clockwise
-	case GLUT_KEY_LEFT: mSpaceship->Rotate(90); break;
-	// If right arrow key is pressed start rotating clockwise
-	case GLUT_KEY_RIGHT: mSpaceship->Rotate(-90); break;
+	case noName:
+		switch (key) {
+		case GLUT_KEY_F2:
+			if (name != NULL) {
+				state = startMode;
+				SetTimer(100, SHOW_START_SCREEN);
+			}
+			break;
+		}
+		break;
+	case gameMode:
+		switch (key)
+			{
+			// If up arrow key is pressed start applying forward thrust
+			case GLUT_KEY_UP: mSpaceship->Thrust(10); break;
+			// If left arrow key is pressed start rotating anti-clockwise
+			case GLUT_KEY_LEFT: mSpaceship->Rotate(90); break;
+			// If right arrow key is pressed start rotating clockwise
+			case GLUT_KEY_RIGHT: mSpaceship->Rotate(-90); break;
+			}
+		break;
 	// Default case - do nothing
 	default: break;
 	}
@@ -207,12 +224,15 @@ void Asteroids::OnTimer(int value)
 	}
 	if (value == SHOW_START_SCREEN)
 	{
-		mGameOverLabel->SetVisible(false);
+		if (mNewPlayerLabel->GetVisible())mNewPlayerLabel->SetVisible(false);
+		if (mPlayerNameLabel->GetVisible())mPlayerNameLabel->SetVisible(false);
+		if(mGameOverLabel->GetVisible())mGameOverLabel->SetVisible(false);
+		if (mHighScoreLabel->GetVisible())mHighScoreLabel->SetVisible(false);
+		if (mHighScoreContentLabel->GetVisible())mHighScoreContentLabel->SetVisible(false);
 		mStartLabel->SetVisible(true);
 	}
 	if (value == START_NEW_GAME)
 	{
-		inGame = true;
 	}
 	if (value == USE_LIFE)
 	{
@@ -230,7 +250,6 @@ void Asteroids::OnTimer(int value)
 	if (value == SHOW_GAME_OVER)
 	{
 		mGameOverLabel->SetVisible(true);
-		inGame = false;
 	}
 	if (value == SHOW_HIGH_SCORE)
 	{
@@ -282,6 +301,7 @@ void Asteroids::CreateGUI()
 {
 	// Add a (transparent) border around the edge of the game display for gui
 	mGameDisplay->GetContainer()->SetBorder(GLVector2i(10, 10));
+	/*
 	// Create a new GUILabel and wrap it up in a shared_ptr
 	mScoreLabel = make_shared<GUILabel>("Score: 0");
 	// Set the vertical alignment of the label to GUI_VALIGN_TOP
@@ -306,33 +326,39 @@ void Asteroids::CreateGUI()
 	// Set the vertical alignment of the label to GUI_VALIGN_MIDDLE
 	mGameOverLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
 	// Add the GUILabel to the GUIContainer  
-	shared_ptr<GUIComponent> game_over_component
-		= static_pointer_cast<GUIComponent>(mGameOverLabel);
+	shared_ptr<GUIComponent> game_over_component = static_pointer_cast<GUIComponent>(mGameOverLabel);
 	mGameDisplay->GetContainer()->AddComponent(game_over_component, GLVector2f(0.5f, 0.5f));
-
+	*/
 
 	// Create a new GUILabel and wrap it up in a shared_ptr
-	mNewPlayerLabel = make_shared<GUILabel>("Enter name: \n");
+	mNewPlayerLabel = make_shared<GUILabel>("Enter name: \n Press F2 when your done!");
 	// Set the vertical alignment of the label to GUI_VALIGN_MIDDLE
-	mNewPlayerLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
+	mNewPlayerLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_TOP);
 	//Set the horizontal alignment of the lable to GUI_HALIGN_CENTER
 	mNewPlayerLabel->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
 	// Add the GUILabel to the GUIComponent  
-	shared_ptr<GUIComponent> new_player_component
-		= static_pointer_cast<GUIComponent>(mStartLabel);
-	mGameDisplay->GetContainer()->AddComponent(new_player_component, GLVector2f(0.0f, 1.0f));
+	shared_ptr<GUIComponent> player_name_component = static_pointer_cast<GUIComponent>(mNewPlayerLabel);
+	mGameDisplay->GetContainer()->AddComponent(player_name_component, GLVector2f(0.0f, 1.0f));
 
-	// Create a new GUILabel and wrap it up in a shared_ptr
+	// Create a new GUILabel to show the players entered name and wrap it up in a shared_ptr
+	mPlayerNameLabel = make_shared<GUILabel>();
+	// Set the vertical alignment of the label to GUI_VALIGN_MIDDLE
+	mPlayerNameLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
+	//Set the horizontal alignment of the lable to GUI_HALIGN_CENTER
+	mPlayerNameLabel->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
+	// Add the GUILabel to the GUIComponent  
+	shared_ptr<GUIComponent> new_player_component = static_pointer_cast<GUIComponent>(mPlayerNameLabel);
+	mGameDisplay->GetContainer()->AddComponent(new_player_component, GLVector2f(0.0f, 1.0f));
+	/*
+	// Create a new GUILabel for the get name message and wrap it up in a shared_ptr
 	mStartLabel = make_shared<GUILabel>("Click s to Start! \n Click d to see Demo! \n Click h to see High-Scores!");
 	// Set the vertical alignment of the label to GUI_VALIGN_MIDDLE
 	mStartLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
 	//Set the horizontal alignment of the lable to GUI_HALIGN_CENTER
 	mStartLabel->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
 	// Add the GUILabel to the GUIComponent  
-	shared_ptr<GUIComponent> start_component
-		= static_pointer_cast<GUIComponent>(mStartLabel);
+	shared_ptr<GUIComponent> start_component = static_pointer_cast<GUIComponent>(mStartLabel);
 	mGameDisplay->GetContainer()->AddComponent(start_component, GLVector2f(0.0f, 1.0f));
-
 
 	//making label for top of high score gui
 	mHighScoreLabel = make_shared<GUILabel>("High-Scores: \n");
@@ -340,21 +366,25 @@ void Asteroids::CreateGUI()
 	mHighScoreLabel->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
 	shared_ptr<GUIComponent> highScoreComponent = static_pointer_cast<GUIComponent>(mHighScoreLabel);
 	mGameDisplay->GetContainer()->AddComponent(highScoreComponent, GLVector2f(0.0f, 1.0f));
+
 	//making the label for the content of the high score table
 	mHighScoreContentLabel = make_shared<GUILabel>(" ");
 	mHighScoreContentLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
 	mHighScoreContentLabel->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
-	shared_ptr<GUIComponent> highScoreContentComponent = static_pointer_cast<GUIComponent>(mHighScoreLabel);
+	shared_ptr<GUIComponent> highScoreContentComponent = static_pointer_cast<GUIComponent>(mHighScoreContentLabel);
 	mGameDisplay->GetContainer()->AddComponent(highScoreContentComponent, GLVector2f(0.0f, 1.0f));
 
-	//set visibility of all components to false to begin with
+	//set visibility of all components to false to begin with except the new player labels
 	mGameOverLabel->SetVisible(false);
 	mScoreLabel->SetVisible(false);
 	mLivesLabel->SetVisible(false);
 	mStartLabel->SetVisible(false);
 	mHighScoreLabel->SetVisible(false);
-	mNewPlayerLabel->SetVisible(false);
 	mHighScoreContentLabel->SetVisible(false);
+	*/
+	mNewPlayerLabel->SetVisible(true);
+	mPlayerNameLabel->SetVisible(true);
+
 }
 
 void Asteroids::OnScoreChanged(int score)
@@ -382,14 +412,14 @@ void Asteroids::OnPlayerKilled(int lives_left)
 	mLivesLabel->SetText(lives_msg);
 
 	if (lives_left > 0) 
-	{ 
+	{
 		SetTimer(1000, USE_LIFE);
 	}
 	else
 	{
-		inGame = false;
 		SetTimer(500, SHOW_GAME_OVER);
 		SetTimer(3000, SHOW_START_SCREEN);
+		Stop();
 	}
 }
 

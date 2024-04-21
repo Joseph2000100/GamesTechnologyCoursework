@@ -1,5 +1,12 @@
 ﻿cl : command line  warning D9035: option 'Gm' has been deprecated and will be removed in a future release
   Asteroids.cpp
-C:\GamesTechnologyCoursework\IN2026 Coursework Code\src\Asteroids.cpp(215,3): error C2065: 'inGame': undeclared identifier
-C:\GamesTechnologyCoursework\IN2026 Coursework Code\src\Asteroids.cpp(233,3): error C2065: 'inGame': undeclared identifier
-C:\GamesTechnologyCoursework\IN2026 Coursework Code\src\Asteroids.cpp(390,3): error C2065: 'inGame': undeclared identifier
+Asteroid.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  Asteroids.vcxproj -> C:\GamesTechnologyCoursework\IN2026 Coursework Code\bin\Asteroids.exe
+  ..\..\assets\asteroid.shape
+  ..\..\assets\asteroid1_fs.png
+  ..\..\assets\bullet.shape
+  ..\..\assets\explosion_fs.png
+  ..\..\assets\spaceship.shape
+  ..\..\assets\spaceship_fs.png
+  ..\..\assets\thruster.shape
+          7 file(s) copied.

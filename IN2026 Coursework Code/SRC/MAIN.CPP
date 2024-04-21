@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	// Create a new asteroids game
 	Asteroids asteroids(argc, argv);
 
-	while (true)asteroids.Start();
+	asteroids.Start();
 	
 
 	return 0;
