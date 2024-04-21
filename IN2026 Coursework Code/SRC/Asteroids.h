@@ -11,10 +11,14 @@
 #include "IPlayerListener.h"
 #include "GUIComponent.h"
 #include "GUIContainer.h"
+#include "Sprite.h"
+#include "GameObject.h"
 
 class GameObject;
 class Spaceship;
 class GUILabel;
+
+enum State{demoMode,noName, startMode, gameMode, highScoreMode};
 
 class Asteroids : public GameSession, public IKeyboardListener, public IGameWorldListener, public IScoreListener, public IPlayerListener
 {
@@ -24,8 +28,6 @@ public:
 
 	virtual void Start(void);
 	virtual void Stop(void);
-
-	enum State{demoMode,noName, startMode, gameMode, highScoreMode};
 
 	// Declaration of IKeyboardListener interface ////////////////////////////////
 
@@ -65,12 +67,13 @@ private:
 	shared_ptr<GUILabel> mHighScoreLabel;
 	shared_ptr<GUILabel> mNewPlayerLabel;
 	shared_ptr<GUILabel> mHighScoreContentLabel;
+	shared_ptr<GUILabel> mPlayerNameLabel;
 
 
 	uint mLevel;
 	uint mAsteroidCount;
 	State state;
-	char const* name;
+	char const* name = NULL;
 
 	void ResetSpaceship();
 	shared_ptr<GameObject> CreateSpaceship();
