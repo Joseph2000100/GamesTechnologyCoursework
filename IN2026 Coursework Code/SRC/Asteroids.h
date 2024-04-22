@@ -13,12 +13,20 @@
 #include "GUIContainer.h"
 #include "Sprite.h"
 #include "GameObject.h"
+#include "fstream"
+#include "vector"
+
 
 class GameObject;
 class Spaceship;
 class GUILabel;
 
 enum State{demoMode,noName, startMode, gameMode, highScoreMode};
+
+struct leaderboardEntry {
+	string pName;
+	int pScore;
+};
 
 class Asteroids : public GameSession, public IKeyboardListener, public IGameWorldListener, public IScoreListener, public IPlayerListener
 {
@@ -55,7 +63,14 @@ public:
 	// Override the default implementation of ITimerListener ////////////////////
 	void OnTimer(int value);
 
+	//removes all objects from the game world when necessary
 	void cleanObjects();
+
+	//methods relating to the high score
+
+	vector<leaderboardEntry> readLeaderboard(const string& leaderboardFile);
+	void writeLeaderboard(const string& leaderboardFile);
+	void updateLeaderboard(const string& pName, int pScore);
 
 	State getState() { return state; }
 
@@ -84,12 +99,13 @@ private:
 
 	shared_ptr<Asteroids> thisPtr;
 
-
 	uint mLevel;
 	uint mAsteroidCount;
 	
 	string name = "";
 	int finalScore = 0;
+	const string leaderboardFileName = "leaderboard.txt";
+	vector<leaderboardEntry> leaderboard;
 
 	void ResetSpaceship();
 	shared_ptr<GameObject> CreateSpaceship();
