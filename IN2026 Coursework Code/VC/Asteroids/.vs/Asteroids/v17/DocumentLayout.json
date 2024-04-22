@@ -9,10 +9,22 @@
       "AbsoluteMoniker": "D:0:0:{97AF88B3-4E3C-43B5-8770-C655BCAAB734}|Asteroids.vcxproj|C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\src\\Asteroids.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{97AF88B3-4E3C-43B5-8770-C655BCAAB734}|Asteroids.vcxproj|C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Player.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{97AF88B3-4E3C-43B5-8770-C655BCAAB734}|Asteroids.vcxproj|C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\ScoreKeeper.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{97AF88B3-4E3C-43B5-8770-C655BCAAB734}|Asteroids.vcxproj|C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\IScoreListener.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{97AF88B3-4E3C-43B5-8770-C655BCAAB734}|Asteroids.vcxproj|C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Asteroid.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{97AF88B3-4E3C-43B5-8770-C655BCAAB734}|Asteroids.vcxproj|C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Asteroid.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{97AF88B3-4E3C-43B5-8770-C655BCAAB734}|Asteroids.vcxproj|C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\src\\Spaceship.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{97AF88B3-4E3C-43B5-8770-C655BCAAB734}|Asteroids.vcxproj|C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\src\\Spaceship.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{97AF88B3-4E3C-43B5-8770-C655BCAAB734}|Asteroids.vcxproj|C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Player.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A573C32D-8F4C-442B-84A7-287D28FFA333}|..\\Engine\\Engine.vcxproj|C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\src\\GameWorld.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
@@ -34,34 +46,38 @@
           "SelectedChildIndex": 4,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "GameWorld.h",
-              "DocumentMoniker": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\GameWorld.h",
-              "RelativeDocumentMoniker": "..\\..\\SRC\\GameWorld.h",
-              "ToolTip": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\GameWorld.h",
-              "RelativeToolTip": "..\\..\\SRC\\GameWorld.h",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAADIAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-04-22T11:40:18.868Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IScoreListener.h",
-              "DocumentMoniker": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\IScoreListener.h",
-              "RelativeDocumentMoniker": "..\\..\\SRC\\IScoreListener.h",
-              "ToolTip": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\IScoreListener.h",
-              "RelativeToolTip": "..\\..\\SRC\\IScoreListener.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAOAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-04-22T11:35:13.43Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "ScoreKeeper.h",
+              "DocumentMoniker": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\ScoreKeeper.h",
+              "RelativeDocumentMoniker": "..\\..\\SRC\\ScoreKeeper.h",
+              "ToolTip": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\ScoreKeeper.h",
+              "RelativeToolTip": "..\\..\\SRC\\ScoreKeeper.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAABHAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-22T14:48:47.506Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Spaceship.cpp",
+              "DocumentMoniker": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Spaceship.cpp",
+              "RelativeDocumentMoniker": "..\\..\\SRC\\Spaceship.cpp",
+              "ToolTip": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Spaceship.cpp",
+              "RelativeToolTip": "..\\..\\SRC\\Spaceship.cpp",
+              "ViewState": "AQIAADsAAAAAAAAAAADwv2kAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-04-22T13:40:20.833Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "Player.h",
               "DocumentMoniker": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Player.h",
               "RelativeDocumentMoniker": "..\\..\\SRC\\Player.h",
@@ -69,12 +85,7 @@
               "RelativeToolTip": "..\\..\\SRC\\Player.h",
               "ViewState": "AQIAAAMAAAAAAAAAAAAAACsAAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-04-22T11:32:47.434Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+              "WhenOpened": "2024-04-22T11:32:47.434Z"
             },
             {
               "$type": "Document",
@@ -84,14 +95,26 @@
               "RelativeDocumentMoniker": "..\\..\\SRC\\Asteroids.cpp",
               "ToolTip": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Asteroids.cpp",
               "RelativeToolTip": "..\\..\\SRC\\Asteroids.cpp",
-              "ViewState": "AQIAAAgBAAAAAAAAAADgvxIBAAAXAAAA",
+              "ViewState": "AQIAALgAAAAAAAAAAADgv7oAAAAdAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-04-18T22:31:50.856Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
+              "Title": "GameWorld.h",
+              "DocumentMoniker": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\GameWorld.h",
+              "RelativeDocumentMoniker": "..\\..\\SRC\\GameWorld.h",
+              "ToolTip": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\GameWorld.h",
+              "RelativeToolTip": "..\\..\\SRC\\GameWorld.h",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAADIAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-22T11:40:18.868Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "main.cpp",
               "DocumentMoniker": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\MAIN.CPP",
               "RelativeDocumentMoniker": "..\\..\\SRC\\MAIN.CPP",
@@ -103,7 +126,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "GameSession.cpp",
               "DocumentMoniker": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\GameSession.cpp",
               "RelativeDocumentMoniker": "..\\..\\SRC\\GameSession.cpp",
@@ -117,8 +140,47 @@
         },
         {
           "DockedWidth": 158,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Asteroid.cpp",
+              "DocumentMoniker": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Asteroid.cpp",
+              "RelativeDocumentMoniker": "..\\..\\SRC\\Asteroid.cpp",
+              "ToolTip": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Asteroid.cpp",
+              "RelativeToolTip": "..\\..\\SRC\\Asteroid.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-04-22T14:48:35.509Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Asteroid.h",
+              "DocumentMoniker": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Asteroid.h",
+              "RelativeDocumentMoniker": "..\\..\\SRC\\Asteroid.h",
+              "ToolTip": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Asteroid.h",
+              "RelativeToolTip": "..\\..\\SRC\\Asteroid.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-22T14:48:33.22Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Spaceship.h",
+              "DocumentMoniker": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Spaceship.h",
+              "RelativeDocumentMoniker": "..\\..\\SRC\\Spaceship.h",
+              "ToolTip": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Spaceship.h",
+              "RelativeToolTip": "..\\..\\SRC\\Spaceship.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-04-22T13:40:21.449Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -127,7 +189,7 @@
               "RelativeDocumentMoniker": "..\\..\\SRC\\Asteroids.h",
               "ToolTip": "C:\\GamesTechnologyCoursework\\IN2026 Coursework Code\\SRC\\Asteroids.h",
               "RelativeToolTip": "..\\..\\SRC\\Asteroids.h",
-              "ViewState": "AQIAAEAAAAAAAAAAAAAiwFcAAAATAAAA",
+              "ViewState": "AQIAABsAAAAAAAAAAAAiwDkAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-04-18T17:17:26.327Z",
               "EditorCaption": ""
