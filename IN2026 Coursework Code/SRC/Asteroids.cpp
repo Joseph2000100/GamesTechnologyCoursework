@@ -108,8 +108,7 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 
 		break;
 	case demoMode:
-		//todo: add method to go to start screen
-		SetTimer(10, SHOW_START_SCREEN);
+		SetTimer(100, SHOW_START_SCREEN);
 		break;
 	case startMode:
 		switch (key)
@@ -202,7 +201,7 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 		explosion->SetRotation(object->GetRotation());
 		mGameWorld->AddObject(explosion);
 		mAsteroidCount--;
-		if (mAsteroidCount <= 0 && mPlayer.getLives() > 0)
+		if (mAsteroidCount <= 0 && mPlayer.getLives() > 0 && state == gameMode)
 		{ 
 			SetTimer(500, START_NEXT_LEVEL); 
 		}
@@ -219,8 +218,28 @@ void Asteroids::OnTimer(int value)
 		if (mStartLabel1->GetVisible())mStartLabel1->SetVisible(false);
 		if (mStartLabel2->GetVisible())mStartLabel2->SetVisible(false);
 		if (mStartLabel3->GetVisible())mStartLabel3->SetVisible(false);
+		mScoreLabel->SetText("Score: 0");
 		mScoreLabel->SetVisible(true);
-		mLivesLabel->SetVisible(true);
+
+		// Create a spaceship and add it to the world
+		mGameWorld->AddObject(CreateSpaceship());
+
+		// Create some asteroids and add them to the world
+		CreateAsteroids(10);
+
+		// Add a player (watcher) to the game world
+		mGameWorld->AddListener(&mPlayer);
+
+		// Add this class as a listener of the player
+		mPlayer.AddListener(thisPtr);
+
+		mPlayer.setLives(3);
+
+		mScoreKeeper.setScore(0);
+
+		mLevel = 0;
+
+		//moveDemoShip();
 	}
 	if (value == CREATE_NEW_PLAYER)
 	{
@@ -229,6 +248,8 @@ void Asteroids::OnTimer(int value)
 	if (value == SHOW_START_SCREEN)
 	{
 		state = startMode;
+		
+		
 		if (mNewPlayerLabel->GetVisible())mNewPlayerLabel->SetVisible(false);
 		if (mPlayerNameLabel->GetVisible())mPlayerNameLabel->SetVisible(false);
 		if(mGameOverLabel->GetVisible())mGameOverLabel->SetVisible(false);
@@ -244,13 +265,20 @@ void Asteroids::OnTimer(int value)
 		mStartLabel1->SetVisible(true);
 		mStartLabel2->SetVisible(true);
 		mStartLabel3->SetVisible(true);
+		
+		cleanObjects();
 	}
 	if (value == START_NEW_GAME)
 	{
 		state = gameMode;
+
+		cleanObjects();
+
 		if (mStartLabel1->GetVisible())mStartLabel1->SetVisible(false);
 		if (mStartLabel2->GetVisible())mStartLabel2->SetVisible(false);
 		if (mStartLabel3->GetVisible())mStartLabel3->SetVisible(false);
+		mScoreLabel->SetText("Score: 0");
+		mLivesLabel->SetText("Lives: 3");
 		mScoreLabel->SetVisible(true);
 		mLivesLabel->SetVisible(true);
 
@@ -274,8 +302,12 @@ void Asteroids::OnTimer(int value)
 	}
 	if (value == USE_LIFE)
 	{
-		mSpaceship->Reset();
-		mGameWorld->AddObject(mSpaceship);
+		if (state == gameMode)
+		{
+			mSpaceship->Reset();
+			mGameWorld->AddObject(mSpaceship);
+		}
+		
 	}
 
 	if (value == START_NEXT_LEVEL)
@@ -289,20 +321,11 @@ void Asteroids::OnTimer(int value)
 	{
 		mGameOverLabel->SetVisible(true);
 
-		GameObjectList objects = mGameWorld->getGameObjects();
-
 		finalScore = mScoreKeeper.getScore();
 
 		mScoreLabel->SetVisible(false);
 
 		//addHighScore();
-
-		for (int i = 0; i < objects.size(); i++) {
-			objects = mGameWorld->getGameObjects();
-			mGameWorld->RemoveObject(objects.front());
-		}
-
-
 		
 	}
 	if (value == SHOW_HIGH_SCORE)
@@ -519,16 +542,23 @@ void Asteroids::OnPlayerKilled(int lives_left)
 	std::string lives_msg = msg_stream.str();
 	mLivesLabel->SetText(lives_msg);
 
-	if (lives_left > 0) 
-	{
-		SetTimer(1000, USE_LIFE);
+	if (state == gameMode) {
+		if (lives_left > 0) 
+		{
+			SetTimer(1000, USE_LIFE);
+		}
+		else
+		{
+			SetTimer(500, SHOW_GAME_OVER);
+			SetTimer(3000, SHOW_START_SCREEN);
+		
+		}
 	}
 	else
 	{
-		SetTimer(500, SHOW_GAME_OVER);
-		SetTimer(3000, SHOW_START_SCREEN);
-		
+
 	}
+	
 }
 
 shared_ptr<GameObject> Asteroids::CreateExplosion()
@@ -543,3 +573,10 @@ shared_ptr<GameObject> Asteroids::CreateExplosion()
 	return explosion;
 }
 
+void Asteroids::cleanObjects() {
+	GameObjectList objects = mGameWorld->getGameObjects();
+	for (int i = 0; i < objects.size(); i++) {
+		objects = mGameWorld->getGameObjects();
+		mGameWorld->RemoveObject(objects.front());
+	}
+}

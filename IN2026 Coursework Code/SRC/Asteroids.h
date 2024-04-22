@@ -29,6 +29,8 @@ public:
 	virtual void Start(void);
 	virtual void Stop(void);
 
+	State state;
+
 	// Declaration of IKeyboardListener interface ////////////////////////////////
 
 	void OnKeyPressed(uchar key, int x, int y);
@@ -52,6 +54,8 @@ public:
 
 	// Override the default implementation of ITimerListener ////////////////////
 	void OnTimer(int value);
+
+	void cleanObjects();
 
 	State getState() { return state; }
 
@@ -83,7 +87,7 @@ private:
 
 	uint mLevel;
 	uint mAsteroidCount;
-	State state;
+	
 	string name = "";
 	int finalScore = 0;
 
