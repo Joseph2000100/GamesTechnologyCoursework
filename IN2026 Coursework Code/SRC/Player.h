@@ -40,6 +40,9 @@ public:
 		}
 	}
 
+	void setLives(int i) { mLives = i; }
+	int getLives() { return mLives; }
+
 private:
 	int mLives;
 

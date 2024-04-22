@@ -39,7 +39,7 @@ void Asteroids::Start()
 {
 
 	// Create a shared pointer for the Asteroids game object - DO NOT REMOVE
-	shared_ptr<Asteroids> thisPtr = shared_ptr<Asteroids>(this);
+	thisPtr = shared_ptr<Asteroids>(this);
 
 	// Add this class as a listener of the game world
 	mGameWorld->AddListener(thisPtr.get());
@@ -65,22 +65,10 @@ void Asteroids::Start()
 	Animation *spaceship_anim = AnimationManager::GetInstance().CreateAnimationFromFile("spaceship", 128, 128, 128, 128, "spaceship_fs.png");
 
 
-		// Create a spaceship and add it to the world
-		//mGameWorld->AddObject(CreateSpaceship());
-
-		// Create some asteroids and add them to the world
-		//CreateAsteroids(10);
-
 	//Create the GUI
 	CreateGUI();
+
 	
-	//mNewPlayerLabel->SetVisible(true);
-
-	// Add a player (watcher) to the game world
-	//mGameWorld->AddListener(&mPlayer);
-
-	// Add this class as a listener of the player
-	//mPlayer.AddListener(thisPtr);
 	
 	// Start the game
 	GameSession::Start();
@@ -121,6 +109,7 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 		break;
 	case demoMode:
 		//todo: add method to go to start screen
+		SetTimer(10, SHOW_START_SCREEN);
 		break;
 	case startMode:
 		switch (key)
@@ -141,6 +130,12 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 		break;
 	case highScoreMode:
 		//todo: add method to make start screen return
+		switch (key)
+		{
+		case 'b':
+			SetTimer(10, SHOW_START_SCREEN);
+			break;
+		}
 		break;
 	default:
 		break;
@@ -207,7 +202,7 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 		explosion->SetRotation(object->GetRotation());
 		mGameWorld->AddObject(explosion);
 		mAsteroidCount--;
-		if (mAsteroidCount <= 0) 
+		if (mAsteroidCount <= 0 && mPlayer.getLives() > 0)
 		{ 
 			SetTimer(500, START_NEXT_LEVEL); 
 		}
@@ -221,11 +216,6 @@ void Asteroids::OnTimer(int value)
 	if (value == SHOW_DEMO_MODE)
 	{
 		state = demoMode;
-		if (mNewPlayerLabel->GetVisible())mNewPlayerLabel->SetVisible(false);
-		if (mPlayerNameLabel->GetVisible())mPlayerNameLabel->SetVisible(false);
-		if (mGameOverLabel->GetVisible())mGameOverLabel->SetVisible(false);
-		if (mHighScoreLabel->GetVisible())mHighScoreLabel->SetVisible(false);
-		if (mHighScoreContentLabel->GetVisible())mHighScoreContentLabel->SetVisible(false);
 		if (mStartLabel1->GetVisible())mStartLabel1->SetVisible(false);
 		if (mStartLabel2->GetVisible())mStartLabel2->SetVisible(false);
 		if (mStartLabel3->GetVisible())mStartLabel3->SetVisible(false);
@@ -245,7 +235,12 @@ void Asteroids::OnTimer(int value)
 		if (mLivesLabel->GetVisible())mLivesLabel->SetVisible(false);
 		if (mHighScoreLabel->GetVisible())mHighScoreLabel->SetVisible(false);
 		if (mScoreLabel->GetVisible())mScoreLabel->SetVisible(false);
-		if (mHighScoreContentLabel->GetVisible())mHighScoreContentLabel->SetVisible(false);
+		if (mHighScoreContentLabel1->GetVisible())mHighScoreContentLabel1->SetVisible(false);
+		if (mHighScoreContentLabel2->GetVisible())mHighScoreContentLabel2->SetVisible(false);
+		if (mHighScoreContentLabel3->GetVisible())mHighScoreContentLabel3->SetVisible(false);
+		if (mHighScoreContentLabel4->GetVisible())mHighScoreContentLabel4->SetVisible(false);
+		if (mHighScoreContentLabel5->GetVisible())mHighScoreContentLabel5->SetVisible(false);
+		if (mHighScoreBackLabel->GetVisible())mHighScoreBackLabel->SetVisible(false);
 		mStartLabel1->SetVisible(true);
 		mStartLabel2->SetVisible(true);
 		mStartLabel3->SetVisible(true);
@@ -253,16 +248,29 @@ void Asteroids::OnTimer(int value)
 	if (value == START_NEW_GAME)
 	{
 		state = gameMode;
-		if (mNewPlayerLabel->GetVisible())mNewPlayerLabel->SetVisible(false);
-		if (mPlayerNameLabel->GetVisible())mPlayerNameLabel->SetVisible(false);
-		if (mGameOverLabel->GetVisible())mGameOverLabel->SetVisible(false);
-		if (mHighScoreLabel->GetVisible())mHighScoreLabel->SetVisible(false);
-		if (mHighScoreContentLabel->GetVisible())mHighScoreContentLabel->SetVisible(false);
 		if (mStartLabel1->GetVisible())mStartLabel1->SetVisible(false);
 		if (mStartLabel2->GetVisible())mStartLabel2->SetVisible(false);
 		if (mStartLabel3->GetVisible())mStartLabel3->SetVisible(false);
 		mScoreLabel->SetVisible(true);
 		mLivesLabel->SetVisible(true);
+
+		// Create a spaceship and add it to the world
+		mGameWorld->AddObject(CreateSpaceship());
+
+		// Create some asteroids and add them to the world
+		CreateAsteroids(10);
+
+		// Add a player (watcher) to the game world
+		mGameWorld->AddListener(&mPlayer);
+
+		// Add this class as a listener of the player
+		mPlayer.AddListener(thisPtr);
+
+		mPlayer.setLives(3);
+
+		mScoreKeeper.setScore(0);
+
+		mLevel = 0;
 	}
 	if (value == USE_LIFE)
 	{
@@ -280,6 +288,22 @@ void Asteroids::OnTimer(int value)
 	if (value == SHOW_GAME_OVER)
 	{
 		mGameOverLabel->SetVisible(true);
+
+		GameObjectList objects = mGameWorld->getGameObjects();
+
+		finalScore = mScoreKeeper.getScore();
+
+		mScoreLabel->SetVisible(false);
+
+		//addHighScore();
+
+		for (int i = 0; i < objects.size(); i++) {
+			objects = mGameWorld->getGameObjects();
+			mGameWorld->RemoveObject(objects.front());
+		}
+
+
+		
 	}
 	if (value == SHOW_HIGH_SCORE)
 	{
@@ -293,7 +317,12 @@ void Asteroids::OnTimer(int value)
 		if (mStartLabel2->GetVisible())mStartLabel2->SetVisible(false);
 		if (mStartLabel3->GetVisible())mStartLabel3->SetVisible(false);
 		mHighScoreLabel->SetVisible(true);
-		mHighScoreContentLabel->SetVisible(true);
+		mHighScoreContentLabel1->SetVisible(true);
+		mHighScoreContentLabel2->SetVisible(true);
+		mHighScoreContentLabel3->SetVisible(true);
+		mHighScoreContentLabel4->SetVisible(true);
+		mHighScoreContentLabel5->SetVisible(true);
+		mHighScoreBackLabel->SetVisible(true);
 	}
 
 }
@@ -347,7 +376,7 @@ void Asteroids::CreateGUI()
 	mScoreLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_TOP);
 	// Add the GUILabel to the GUIComponent  
 	shared_ptr<GUIComponent> score_component = static_pointer_cast<GUIComponent>(mScoreLabel);
-	mGameDisplay->GetContainer()->AddComponent(score_component, GLVector2f(0.0f, 1.0f));
+	mGameDisplay->GetContainer()->AddComponent(score_component, GLVector2f(0.2f, 1.0f));
 
 	// Create a new GUILabel and wrap it up in a shared_ptr
 	mLivesLabel = make_shared<GUILabel>("Lives: 3");
@@ -406,19 +435,42 @@ void Asteroids::CreateGUI()
 	mGameDisplay->GetContainer()->AddComponent(start_component_2, GLVector2f(0.5f, 0.5f));
 	mGameDisplay->GetContainer()->AddComponent(start_component_3, GLVector2f(0.5f, 0.4f));
 
-	//making label for top of high score gui
+	//making label components for the high-score page and adding them to the container
 	mHighScoreLabel = make_shared<GUILabel>("High-Scores: ");
 	mHighScoreLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_TOP);
 	mHighScoreLabel->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
 	shared_ptr<GUIComponent> highScoreComponent = static_pointer_cast<GUIComponent>(mHighScoreLabel);
+	mHighScoreContentLabel1 = make_shared<GUILabel>("1.  ");
+	mHighScoreContentLabel1->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
+	mHighScoreContentLabel1->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
+	shared_ptr<GUIComponent> highScoreContentComponent1 = static_pointer_cast<GUIComponent>(mHighScoreContentLabel1);
+	mHighScoreContentLabel2 = make_shared<GUILabel>("2.  ");
+	mHighScoreContentLabel2->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
+	mHighScoreContentLabel2->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
+	shared_ptr<GUIComponent> highScoreContentComponent2 = static_pointer_cast<GUIComponent>(mHighScoreContentLabel2);
+	mHighScoreContentLabel3 = make_shared<GUILabel>("3.  ");
+	mHighScoreContentLabel3->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
+	mHighScoreContentLabel3->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
+	shared_ptr<GUIComponent> highScoreContentComponent3 = static_pointer_cast<GUIComponent>(mHighScoreContentLabel3);
+	mHighScoreContentLabel4 = make_shared<GUILabel>("4.  ");
+	mHighScoreContentLabel4->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
+	mHighScoreContentLabel4->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
+	shared_ptr<GUIComponent> highScoreContentComponent4 = static_pointer_cast<GUIComponent>(mHighScoreContentLabel4);
+	mHighScoreContentLabel5 = make_shared<GUILabel>("5.  ");
+	mHighScoreContentLabel5->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
+	mHighScoreContentLabel5->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
+	shared_ptr<GUIComponent> highScoreContentComponent5 = static_pointer_cast<GUIComponent>(mHighScoreContentLabel5);
+	mHighScoreBackLabel = make_shared<GUILabel>("Press b to go back!");
+	mHighScoreBackLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
+	mHighScoreBackLabel->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
+	shared_ptr<GUIComponent> highScoreBackComponent = static_pointer_cast<GUIComponent>(mHighScoreBackLabel);
 	mGameDisplay->GetContainer()->AddComponent(highScoreComponent, GLVector2f(0.5f, 1.0f));
-
-	//making the label for the content of the high score table
-	mHighScoreContentLabel = make_shared<GUILabel>(" ");
-	mHighScoreContentLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
-	mHighScoreContentLabel->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
-	shared_ptr<GUIComponent> highScoreContentComponent = static_pointer_cast<GUIComponent>(mHighScoreContentLabel);
-	mGameDisplay->GetContainer()->AddComponent(highScoreContentComponent, GLVector2f(0.5f, 0.5f));
+	mGameDisplay->GetContainer()->AddComponent(highScoreContentComponent1, GLVector2f(0.5f, 0.8f));
+	mGameDisplay->GetContainer()->AddComponent(highScoreContentComponent2, GLVector2f(0.5f, 0.7f));
+	mGameDisplay->GetContainer()->AddComponent(highScoreContentComponent3, GLVector2f(0.5f, 0.6f));
+	mGameDisplay->GetContainer()->AddComponent(highScoreContentComponent4, GLVector2f(0.5f, 0.5f));
+	mGameDisplay->GetContainer()->AddComponent(highScoreContentComponent5, GLVector2f(0.5f, 0.4f));
+	mGameDisplay->GetContainer()->AddComponent(highScoreBackComponent, GLVector2f(0.5f, 0.1f));
 
 	
 	//set visibility of all components to false to begin with except the new player labels
@@ -429,7 +481,13 @@ void Asteroids::CreateGUI()
 	mStartLabel2->SetVisible(false);
 	mStartLabel3->SetVisible(false);
 	mHighScoreLabel->SetVisible(false);
-	mHighScoreContentLabel->SetVisible(false);
+	mHighScoreContentLabel1->SetVisible(false);
+	mHighScoreContentLabel2->SetVisible(false);
+	mHighScoreContentLabel3->SetVisible(false);
+	mHighScoreContentLabel4->SetVisible(false);
+	mHighScoreContentLabel5->SetVisible(false);
+	mHighScoreBackLabel->SetVisible(false);
+
 	
 	
 	mNewPlayerLabel->SetVisible(true);

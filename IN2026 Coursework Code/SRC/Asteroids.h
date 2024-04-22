@@ -58,6 +58,8 @@ public:
 	string getName() { return name; }
 	void setName(string n) { name = n; }
 
+	Player getPlayer() { return mPlayer; }
+
 private:
 	shared_ptr<Spaceship> mSpaceship;
 	shared_ptr<GUILabel> mScoreLabel;
@@ -68,14 +70,22 @@ private:
 	shared_ptr<GUILabel> mStartLabel3;
 	shared_ptr<GUILabel> mHighScoreLabel;
 	shared_ptr<GUILabel> mNewPlayerLabel;
-	shared_ptr<GUILabel> mHighScoreContentLabel;
+	shared_ptr<GUILabel> mHighScoreContentLabel1;
+	shared_ptr<GUILabel> mHighScoreContentLabel2;
+	shared_ptr<GUILabel> mHighScoreContentLabel3;
+	shared_ptr<GUILabel> mHighScoreContentLabel4;
+	shared_ptr<GUILabel> mHighScoreContentLabel5;
+	shared_ptr<GUILabel> mHighScoreBackLabel;
 	shared_ptr<GUILabel> mPlayerNameLabel;
+
+	shared_ptr<Asteroids> thisPtr;
 
 
 	uint mLevel;
 	uint mAsteroidCount;
 	State state;
 	string name = "";
+	int finalScore = 0;
 
 	void ResetSpaceship();
 	shared_ptr<GameObject> CreateSpaceship();
