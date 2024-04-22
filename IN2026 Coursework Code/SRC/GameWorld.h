@@ -48,6 +48,8 @@ public:
 
 	void WrapXY(float &x, float &y);
 
+	GameObjectList getGameObjects() { return mGameObjects; }
+
 protected:
 	void UpdateObjects(int t);
 	void UpdateCollisions(int t);
