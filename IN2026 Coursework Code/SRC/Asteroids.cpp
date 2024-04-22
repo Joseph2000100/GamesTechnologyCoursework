@@ -11,6 +11,8 @@
 #include "BoundingSphere.h"
 #include "GUILabel.h"
 #include "Explosion.h"
+#include "fstream"
+#include "vector"
 
 
 // PUBLIC INSTANCE CONSTRUCTORS ///////////////////////////////////////////////
@@ -37,6 +39,8 @@ Asteroids::~Asteroids(void)
 /** Start an asteroids game. */
 void Asteroids::Start()
 {
+	//load the leaderboard into the applications memory
+	leaderboard = readLeaderboard(leaderboardFileName);
 
 	// Create a shared pointer for the Asteroids game object - DO NOT REMOVE
 	thisPtr = shared_ptr<Asteroids>(this);
@@ -321,16 +325,43 @@ void Asteroids::OnTimer(int value)
 	{
 		mGameOverLabel->SetVisible(true);
 
-		finalScore = mScoreKeeper.getScore();
-
 		mScoreLabel->SetVisible(false);
-
-		//addHighScore();
 		
 	}
 	if (value == SHOW_HIGH_SCORE)
 	{
 		state = highScoreMode;
+
+		// Format the lives left message using an string-based stream
+		std::ostringstream score1_stream;
+		score1_stream << "1. " << leaderboard[0].pName << ": " << leaderboard[0].pScore;
+		// Get the lives left message as a string
+		std::string score1_msg = score1_stream.str();
+		mHighScoreContentLabel1->SetText(score1_msg);
+		// Format the lives left message using an string-based stream
+		std::ostringstream score2_stream;
+		score2_stream << "2. " << leaderboard[1].pName << ": " << leaderboard[1].pScore;
+		// Get the lives left message as a string
+		std::string score2_msg = score2_stream.str();
+		mHighScoreContentLabel2->SetText(score2_msg);
+		// Format the lives left message using an string-based stream
+		std::ostringstream score3_stream;
+		score3_stream << "3. " << leaderboard[2].pName << ": " << leaderboard[2].pScore;		
+		std::string score3_msg = score3_stream.str();
+		mHighScoreContentLabel3->SetText(score3_msg);
+		// Format the lives left message using an string-based stream
+		std::ostringstream score4_stream;
+		score4_stream << "4. " << leaderboard[3].pName << ": " << leaderboard[3].pScore;
+		// Get the lives left message as a string
+		std::string score4_msg = score4_stream.str();
+		mHighScoreContentLabel3->SetText(score4_msg);
+		// Format the lives left message using an string-based stream
+		std::ostringstream score5_stream;
+		score5_stream << "5. " << leaderboard[4].pName << ": " << leaderboard[4].pScore;
+		// Get the lives left message as a string
+		std::string score5_msg = score5_stream.str();
+		mHighScoreContentLabel5->SetText(score5_msg);
+
 		if (mNewPlayerLabel->GetVisible())mNewPlayerLabel->SetVisible(false);
 		if (mPlayerNameLabel->GetVisible())mPlayerNameLabel->SetVisible(false);
 		if (mGameOverLabel->GetVisible())mGameOverLabel->SetVisible(false);
@@ -549,6 +580,11 @@ void Asteroids::OnPlayerKilled(int lives_left)
 		}
 		else
 		{
+			finalScore = mScoreKeeper.getScore();
+
+			updateLeaderboard(name, finalScore);
+			writeLeaderboard(leaderboardFileName);
+
 			SetTimer(500, SHOW_GAME_OVER);
 			SetTimer(3000, SHOW_START_SCREEN);
 		
@@ -575,8 +611,43 @@ shared_ptr<GameObject> Asteroids::CreateExplosion()
 
 void Asteroids::cleanObjects() {
 	GameObjectList objects = mGameWorld->getGameObjects();
-	for (int i = 0; i < objects.size(); i++) {
+	for (uint i = 0; i < objects.size(); i++) {
 		objects = mGameWorld->getGameObjects();
 		mGameWorld->RemoveObject(objects.front());
 	}
 }
+
+vector<leaderboardEntry> Asteroids::readLeaderboard(const string& leaderboardFile)
+{
+	
+	ifstream file(leaderboardFile);
+	if (file.is_open()) {
+		leaderboardEntry entry;
+		while (file >> entry.pName >> entry.pScore) {
+			leaderboard.push_back(entry);
+		}
+		file.close();
+	}
+	return leaderboard;
+}
+
+void Asteroids::writeLeaderboard(const string& leaderboardFile)
+{
+	ofstream file(leaderboardFile);
+	if (file.is_open()) {
+		for (const leaderboardEntry& entry : leaderboard) {
+			file << entry.pName << " " << entry.pScore << endl;
+		}
+		file.close();
+	}
+}
+
+void Asteroids::updateLeaderboard(const string& pName, int pScore)
+{
+	leaderboard.push_back({ pName, pScore });
+
+	sort(leaderboard.begin(), leaderboard.end(), [](const leaderboardEntry& a, const leaderboardEntry& b) {
+		return a.pScore > b.pScore;
+	});
+}
+
