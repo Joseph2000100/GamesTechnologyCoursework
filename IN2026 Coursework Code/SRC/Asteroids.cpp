@@ -627,10 +627,11 @@ void Asteroids::cleanObjects() {
 	}
 }
 
-vector<leaderboardEntry> Asteroids::readLeaderboard(const string& leaderboardFile)
+vector<leaderboardEntry> Asteroids::readLeaderboard(string leaderboardFile)
 {
 	
-	ifstream file(leaderboardFile);
+	ifstream file;
+	file.open(leaderboardFile);
 	if (file.is_open()) {
 		leaderboardEntry entry;
 		while (file >> entry.pName >> entry.pScore) {
@@ -641,9 +642,10 @@ vector<leaderboardEntry> Asteroids::readLeaderboard(const string& leaderboardFil
 	return leaderboard;
 }
 
-void Asteroids::writeLeaderboard(const string& leaderboardFile)
+void Asteroids::writeLeaderboard(string leaderboardFile)
 {
-	ofstream file(leaderboardFile);
+	ofstream file;
+	file.open(leaderboardFile);
 	if (file.is_open()) {
 		for (const leaderboardEntry& entry : leaderboard) {
 			file << entry.pName << " " << entry.pScore << endl;
