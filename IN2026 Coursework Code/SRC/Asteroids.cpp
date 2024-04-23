@@ -107,11 +107,21 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 		}
 		break;
 	case noName:
-		letter = (1, static_cast<char>(key));
-		setName(getName().append(letter));
+		switch (key) {
+		case '¬':
+			break;
+		case '\b':
+			if (name != "") {
+				name.erase(name.size()-1);
+				SetTimer(10, CREATE_NEW_PLAYER);
+				}
+			break;
+		default:
+			letter = (1, static_cast<char>(key));
+			setName(getName().append(letter));
 
-		SetTimer(10, CREATE_NEW_PLAYER);
-
+			SetTimer(10, CREATE_NEW_PLAYER);
+		}
 		break;
 	case demoMode:
 		SetTimer(100, SHOW_START_SCREEN);
@@ -362,7 +372,7 @@ void Asteroids::OnTimer(int value)
 		score4_stream << "4. " << leaderboard[3].pName << ": " << leaderboard[3].pScore;
 		// Get the lives left message as a string
 		std::string score4_msg = score4_stream.str();
-		mHighScoreContentLabel3->SetText(score4_msg);
+		mHighScoreContentLabel4->SetText(score4_msg);
 		// Format the lives left message using an string-based stream
 		std::ostringstream score5_stream;
 		score5_stream << "5. " << leaderboard[4].pName << ": " << leaderboard[4].pScore;
