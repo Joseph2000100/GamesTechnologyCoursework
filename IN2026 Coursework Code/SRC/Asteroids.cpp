@@ -13,6 +13,8 @@
 #include "Explosion.h"
 #include "fstream"
 #include "vector"
+#include "algorithm"
+#include "stdlib.h"
 
 
 // PUBLIC INSTANCE CONSTRUCTORS ///////////////////////////////////////////////
@@ -196,6 +198,11 @@ void Asteroids::OnSpecialKeyReleased(int key, int x, int y)
 
 // PUBLIC INSTANCE METHODS IMPLEMENTING IGameWorldListener ////////////////////
 
+void Asteroids::OnWorldUpdated(GameWorld* world)
+{
+	moveDemoShip();
+}
+
 void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 {
 	if (object->GetType() == GameObjectType("Asteroid"))
@@ -218,7 +225,7 @@ void Asteroids::OnTimer(int value)
 {
 	if (value == SHOW_DEMO_MODE)
 	{
-		state = demoMode;
+		
 		if (mStartLabel1->GetVisible())mStartLabel1->SetVisible(false);
 		if (mStartLabel2->GetVisible())mStartLabel2->SetVisible(false);
 		if (mStartLabel3->GetVisible())mStartLabel3->SetVisible(false);
@@ -242,8 +249,8 @@ void Asteroids::OnTimer(int value)
 		mScoreKeeper.setScore(0);
 
 		mLevel = 0;
-
-		//moveDemoShip();
+		demoCount = 0;
+		state = demoMode;
 	}
 	if (value == CREATE_NEW_PLAYER)
 	{
@@ -430,7 +437,7 @@ void Asteroids::CreateGUI()
 	mScoreLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_TOP);
 	// Add the GUILabel to the GUIComponent  
 	shared_ptr<GUIComponent> score_component = static_pointer_cast<GUIComponent>(mScoreLabel);
-	mGameDisplay->GetContainer()->AddComponent(score_component, GLVector2f(0.2f, 1.0f));
+	mGameDisplay->GetContainer()->AddComponent(score_component, GLVector2f(0.0f, 1.0f));
 
 	// Create a new GUILabel and wrap it up in a shared_ptr
 	mLivesLabel = make_shared<GUILabel>("Lives: 3");
@@ -651,3 +658,25 @@ void Asteroids::updateLeaderboard(const string& pName, int pScore)
 	});
 }
 
+void Asteroids::moveDemoShip() {
+	if (state == demoMode) {
+		if (mSpaceship) {
+			demoCount = demoCount + 1;
+
+			if (demoCount % 50 == 0) {
+
+				int randint = rand() % 2;
+				if (randint == 0) {
+					mSpaceship->AddAngle(rand() % 20);
+				}
+				else if (randint == 1) {
+					mSpaceship->AddAngle(-1 * (rand() % 20));
+				}
+				mSpaceship->Thrust(rand() % 10);
+			}
+			if (demoCount % 200 == 0) {
+				mSpaceship->Shoot();
+			}
+		}
+	}
+}

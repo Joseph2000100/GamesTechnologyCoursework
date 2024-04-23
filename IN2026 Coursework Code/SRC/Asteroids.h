@@ -56,7 +56,7 @@ public:
 
 	// Declaration of IGameWorldListener interface //////////////////////////////
 
-	void OnWorldUpdated(GameWorld* world) {}
+	void OnWorldUpdated(GameWorld* world);
 	void OnObjectAdded(GameWorld* world, shared_ptr<GameObject> object) {}
 	void OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object);
 
@@ -67,7 +67,6 @@ public:
 	void cleanObjects();
 
 	//methods relating to the high score
-
 	vector<leaderboardEntry> readLeaderboard(const string& leaderboardFile);
 	void writeLeaderboard(const string& leaderboardFile);
 	void updateLeaderboard(const string& pName, int pScore);
@@ -78,6 +77,8 @@ public:
 	void setName(string n) { name = n; }
 
 	Player getPlayer() { return mPlayer; }
+
+	int demoCount = 0;
 
 private:
 	shared_ptr<Spaceship> mSpaceship;
@@ -112,6 +113,7 @@ private:
 	void CreateGUI();
 	void CreateAsteroids(const uint num_asteroids);
 	shared_ptr<GameObject> CreateExplosion();
+	void  moveDemoShip();
 	
 	// States that  the application can be in
 	const static uint SHOW_DEMO_MODE = 0;
