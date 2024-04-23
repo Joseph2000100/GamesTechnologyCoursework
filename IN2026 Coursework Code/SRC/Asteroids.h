@@ -67,8 +67,8 @@ public:
 	void cleanObjects();
 
 	//methods relating to the high score
-	vector<leaderboardEntry> readLeaderboard(const string& leaderboardFile);
-	void writeLeaderboard(const string& leaderboardFile);
+	vector<leaderboardEntry> readLeaderboard(string leaderboardFile);
+	void writeLeaderboard(string leaderboardFile);
 	void updateLeaderboard(const string& pName, int pScore);
 
 	State getState() { return state; }
