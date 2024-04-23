@@ -216,6 +216,10 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 		{ 
 			SetTimer(500, START_NEXT_LEVEL); 
 		}
+		else if (mAsteroidCount <= 0 && mPlayer.getLives() > 0 && state == demoMode)
+		{
+			CreateAsteroids(10);
+		}
 	}
 }
 
@@ -313,12 +317,9 @@ void Asteroids::OnTimer(int value)
 	}
 	if (value == USE_LIFE)
 	{
-		if (state == gameMode)
-		{
-			mSpaceship->Reset();
-			mGameWorld->AddObject(mSpaceship);
-		}
-		
+		mSpaceship->Reset();
+		mGameWorld->AddObject(mSpaceship);
+
 	}
 
 	if (value == START_NEXT_LEVEL)
@@ -597,8 +598,10 @@ void Asteroids::OnPlayerKilled(int lives_left)
 		
 		}
 	}
-	else
+	else if (state == demoMode)
 	{
+		SetTimer(1000, USE_LIFE);
+		mSpaceship->Rotate(rand());
 
 	}
 	
