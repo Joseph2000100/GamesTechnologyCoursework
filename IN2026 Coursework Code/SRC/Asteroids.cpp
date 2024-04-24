@@ -108,7 +108,10 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 		break;
 	case noName:
 		switch (key) {
-		case '¬':
+		case '\r':
+			if (name != "") {
+				SetTimer(100, SHOW_START_SCREEN);
+			}
 			break;
 		case '\b':
 			if (name != "") {
@@ -118,7 +121,7 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 			break;
 		default:
 			letter = (1, static_cast<char>(key));
-			setName(getName().append(letter));
+			setName(getName().append(letter));		
 
 			SetTimer(10, CREATE_NEW_PLAYER);
 		}
@@ -166,13 +169,6 @@ void Asteroids::OnSpecialKeyPressed(int key, int x, int y)
 	switch (state)
 	{
 	case noName:
-		switch (key) {
-		case GLUT_KEY_F2:
-			if (name != "") {
-				SetTimer(100, SHOW_START_SCREEN);
-			}
-			break;
-		}
 		break;
 	case gameMode:
 		switch (key)
@@ -350,35 +346,52 @@ void Asteroids::OnTimer(int value)
 	{
 		state = highScoreMode;
 
-		// Format the lives left message using an string-based stream
-		std::ostringstream score1_stream;
-		score1_stream << "1. " << leaderboard[0].pName << ": " << leaderboard[0].pScore;
-		// Get the lives left message as a string
-		std::string score1_msg = score1_stream.str();
-		mHighScoreContentLabel1->SetText(score1_msg);
-		// Format the lives left message using an string-based stream
-		std::ostringstream score2_stream;
-		score2_stream << "2. " << leaderboard[1].pName << ": " << leaderboard[1].pScore;
-		// Get the lives left message as a string
-		std::string score2_msg = score2_stream.str();
-		mHighScoreContentLabel2->SetText(score2_msg);
-		// Format the lives left message using an string-based stream
-		std::ostringstream score3_stream;
-		score3_stream << "3. " << leaderboard[2].pName << ": " << leaderboard[2].pScore;		
-		std::string score3_msg = score3_stream.str();
-		mHighScoreContentLabel3->SetText(score3_msg);
-		// Format the lives left message using an string-based stream
-		std::ostringstream score4_stream;
-		score4_stream << "4. " << leaderboard[3].pName << ": " << leaderboard[3].pScore;
-		// Get the lives left message as a string
-		std::string score4_msg = score4_stream.str();
-		mHighScoreContentLabel4->SetText(score4_msg);
-		// Format the lives left message using an string-based stream
-		std::ostringstream score5_stream;
-		score5_stream << "5. " << leaderboard[4].pName << ": " << leaderboard[4].pScore;
-		// Get the lives left message as a string
-		std::string score5_msg = score5_stream.str();
-		mHighScoreContentLabel5->SetText(score5_msg);
+		int len = leaderboard.size();
+
+		if (len > 0) {
+			// Format the lives left message using an string-based stream
+			std::ostringstream score1_stream;
+			score1_stream << "1. " << leaderboard[0].pName << ": " << leaderboard[0].pScore;
+			// Get the lives left message as a string
+			std::string score1_msg = score1_stream.str();
+			mHighScoreContentLabel1->SetText(score1_msg);
+		}
+		
+		if (len > 1) {
+			// Format the lives left message using an string-based stream
+			std::ostringstream score2_stream;
+			score2_stream << "2. " << leaderboard[1].pName << ": " << leaderboard[1].pScore;
+			// Get the lives left message as a string
+			std::string score2_msg = score2_stream.str();
+			mHighScoreContentLabel2->SetText(score2_msg);
+		}
+		
+		if (len > 2) {
+			// Format the lives left message using an string-based stream
+			std::ostringstream score3_stream;
+			score3_stream << "3. " << leaderboard[2].pName << ": " << leaderboard[2].pScore;		
+			std::string score3_msg = score3_stream.str();
+			mHighScoreContentLabel3->SetText(score3_msg);
+		}
+		
+		if (len > 3) {
+			// Format the lives left message using an string-based stream
+			std::ostringstream score4_stream;
+			score4_stream << "4. " << leaderboard[3].pName << ": " << leaderboard[3].pScore;
+			// Get the lives left message as a string
+			std::string score4_msg = score4_stream.str();
+			mHighScoreContentLabel4->SetText(score4_msg);
+		}
+		
+		if (len > 4) {
+			// Format the lives left message using an string-based stream
+			std::ostringstream score5_stream;
+			score5_stream << "5. " << leaderboard[4].pName << ": " << leaderboard[4].pScore;
+			// Get the lives left message as a string
+			std::string score5_msg = score5_stream.str();
+			mHighScoreContentLabel5->SetText(score5_msg);
+		}
+		
 
 		if (mNewPlayerLabel->GetVisible())mNewPlayerLabel->SetVisible(false);
 		if (mPlayerNameLabel->GetVisible())mPlayerNameLabel->SetVisible(false);
@@ -470,7 +483,7 @@ void Asteroids::CreateGUI()
 	
 
 	// Create a new GUILabel and wrap it up in a shared_ptr
-	mNewPlayerLabel = make_shared<GUILabel>("Enter name:    Press F2 when your done!");
+	mNewPlayerLabel = make_shared<GUILabel>("Enter name:    Press ENTER when your done!");
 	// Set the vertical alignment of the label to GUI_VALIGN_MIDDLE
 	mNewPlayerLabel->SetVerticalAlignment(GUIComponent::GUI_VALIGN_TOP);
 	//Set the horizontal alignment of the lable to GUI_HALIGN_CENTER
