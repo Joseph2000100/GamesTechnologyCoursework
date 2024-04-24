@@ -71,8 +71,6 @@ public:
 	void writeLeaderboard(string leaderboardFile);
 	void updateLeaderboard(const string& pName, int pScore);
 
-	State getState() { return state; }
-
 	string getName() { return name; }
 	void setName(string n) { name = n; }
 
@@ -115,7 +113,7 @@ private:
 	shared_ptr<GameObject> CreateExplosion();
 	void  moveDemoShip();
 	
-	// States that  the application can be in
+	// Actions that the application can be do
 	const static uint SHOW_DEMO_MODE = 0;
 	const static uint CREATE_NEW_PLAYER = 1;
 	const static uint SHOW_START_SCREEN = 2;

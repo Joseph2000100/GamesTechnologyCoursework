@@ -74,8 +74,6 @@ void Asteroids::Start()
 	//Create the GUI
 	CreateGUI();
 
-	
-	
 	// Start the game
 	GameSession::Start();
 	
@@ -101,32 +99,33 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 		switch (key)
 		{
 		case ' ':
-			//Shoots a bullet when space bar is pressed
+			//Shoots a bullet when space bar is pressed and in game mode
 			mSpaceship->Shoot();
 			break;
 		}
 		break;
 	case noName:
 		switch (key) {
+			//when no name has been entered yet: the return key submits the name if its not empty
 		case '\r':
 			if (name != "") {
 				SetTimer(100, SHOW_START_SCREEN);
 			}
 			break;
-		case '\b':
+		case '\b': // the backspace key removes a letter from name
 			if (name != "") {
 				name.erase(name.size()-1);
 				SetTimer(10, CREATE_NEW_PLAYER);
 				}
 			break;
-		default:
+		default: // all the other letters are appended onto the string to create the name
 			letter = (1, static_cast<char>(key));
 			setName(getName().append(letter));		
 
 			SetTimer(10, CREATE_NEW_PLAYER);
 		}
 		break;
-	case demoMode:
+	case demoMode: // in demo mode any button will return you to the start screen
 		SetTimer(100, SHOW_START_SCREEN);
 		break;
 	case startMode:
@@ -147,7 +146,7 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 		}
 		break;
 	case highScoreMode:
-		//todo: add method to make start screen return
+		//make start screen return when b is clisked
 		switch (key)
 		{
 		case 'b':
@@ -212,17 +211,18 @@ void Asteroids::OnWorldUpdated(GameWorld* world)
 void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 {
 	if (object->GetType() == GameObjectType("Asteroid"))
-	{
+	{ // if an asteroid gets removed then an explosion will happen where it was destroyed
 		shared_ptr<GameObject> explosion = CreateExplosion();
 		explosion->SetPosition(object->GetPosition());
 		explosion->SetRotation(object->GetRotation());
 		mGameWorld->AddObject(explosion);
 		mAsteroidCount--;
+		//when in gamemode killing all the asteroids starts the next level but in the demo mode it just spawns more asteroids
 		if (mAsteroidCount <= 0 && mPlayer.getLives() > 0 && state == gameMode)
 		{ 
 			SetTimer(500, START_NEXT_LEVEL); 
 		}
-		else if (mAsteroidCount <= 0 && mPlayer.getLives() > 0 && state == demoMode)
+		else if (mAsteroidCount <= 0 && state == demoMode)
 		{
 			CreateAsteroids(10);
 		}
@@ -234,7 +234,7 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 void Asteroids::OnTimer(int value)
 {
 	if (value == SHOW_DEMO_MODE)
-	{
+	{ // Sets up gui visibility and adds objects and listeners to the demo mode
 		
 		if (mStartLabel1->GetVisible())mStartLabel1->SetVisible(false);
 		if (mStartLabel2->GetVisible())mStartLabel2->SetVisible(false);
@@ -263,11 +263,11 @@ void Asteroids::OnTimer(int value)
 		state = demoMode;
 	}
 	if (value == CREATE_NEW_PLAYER)
-	{
+	{ //slightly deceptive name, just sets the labels text to the name variable so the user can see what theyre typing
 		mPlayerNameLabel->SetText(name);
 	}
 	if (value == SHOW_START_SCREEN)
-	{
+	{ // changes the state and the gui component visibility to the start screen
 		state = startMode;
 		
 		
@@ -290,7 +290,7 @@ void Asteroids::OnTimer(int value)
 		cleanObjects();
 	}
 	if (value == START_NEW_GAME)
-	{
+	{ // clears any unwanted gui components then adds the appropriate game objects and listeners, and sets variables
 		state = gameMode;
 
 		cleanObjects();
@@ -322,21 +322,21 @@ void Asteroids::OnTimer(int value)
 		mLevel = 0;
 	}
 	if (value == USE_LIFE)
-	{
+	{ // revives the spaceship
 		mSpaceship->Reset();
 		mGameWorld->AddObject(mSpaceship);
 
 	}
 
 	if (value == START_NEXT_LEVEL)
-	{
+	{ // increases level and respawns the asteroids with a multiplier
 		mLevel++;
 		int num_asteroids = 10 + 2 * mLevel;
 		CreateAsteroids(num_asteroids);
 	}
 
 	if (value == SHOW_GAME_OVER)
-	{
+	{ // displays the game over message
 		mGameOverLabel->SetVisible(true);
 
 		mScoreLabel->SetVisible(false);
@@ -347,6 +347,8 @@ void Asteroids::OnTimer(int value)
 		state = highScoreMode;
 
 		int len = leaderboard.size();
+
+		//shows up to 5 entries from the top of the leaderboard
 
 		if (len > 0) {
 			// Format the lives left message using an string-based stream
@@ -433,6 +435,8 @@ shared_ptr<GameObject> Asteroids::CreateSpaceship()
 
 }
 
+
+//method for creating asteroids and placing them in the game world
 void Asteroids::CreateAsteroids(const uint num_asteroids)
 {
 	mAsteroidCount = num_asteroids;
@@ -574,7 +578,6 @@ void Asteroids::CreateGUI()
 	mHighScoreBackLabel->SetVisible(false);
 
 	
-	
 	mNewPlayerLabel->SetVisible(true);
 	mPlayerNameLabel->SetVisible(true);
 
@@ -607,10 +610,11 @@ void Asteroids::OnPlayerKilled(int lives_left)
 	if (state == gameMode) {
 		if (lives_left > 0) 
 		{
+			//respawn the player if they have more lives
 			SetTimer(1000, USE_LIFE);
 		}
 		else
-		{
+		{ // update the leaderboard and then show game over  before moving back to the start screen
 			finalScore = mScoreKeeper.getScore();
 
 			updateLeaderboard(name, finalScore);
@@ -630,6 +634,7 @@ void Asteroids::OnPlayerKilled(int lives_left)
 	
 }
 
+//method creating the explosion effect
 shared_ptr<GameObject> Asteroids::CreateExplosion()
 {
 	Animation *anim_ptr = AnimationManager::GetInstance().GetAnimationByName("explosion");
@@ -642,6 +647,8 @@ shared_ptr<GameObject> Asteroids::CreateExplosion()
 	return explosion;
 }
 
+
+//method to clear the game world of objects
 void Asteroids::cleanObjects() {
 	GameObjectList objects = mGameWorld->getGameObjects();
 	for (uint i = 0; i < objects.size(); i++) {
@@ -650,6 +657,7 @@ void Asteroids::cleanObjects() {
 	}
 }
 
+// method that opens the leaderboard file and reads the contents into the leaderboard vector
 vector<leaderboardEntry> Asteroids::readLeaderboard(string leaderboardFile)
 {
 	
@@ -665,6 +673,7 @@ vector<leaderboardEntry> Asteroids::readLeaderboard(string leaderboardFile)
 	return leaderboard;
 }
 
+// method takes all the entries in leaderboard, formats them and writes them to the text file
 void Asteroids::writeLeaderboard(string leaderboardFile)
 {
 	ofstream file;
@@ -677,6 +686,7 @@ void Asteroids::writeLeaderboard(string leaderboardFile)
 	}
 }
 
+//method to add an entry to the leaderboard and sort it using a method from algorithm
 void Asteroids::updateLeaderboard(const string& pName, int pScore)
 {
 	leaderboard.push_back({ pName, pScore });
@@ -686,12 +696,14 @@ void Asteroids::updateLeaderboard(const string& pName, int pScore)
 	});
 }
 
+
+//method called when the world is updated to move the spaceship in demo mode
 void Asteroids::moveDemoShip() {
 	if (state == demoMode) {
 		if (mSpaceship) {
 			demoCount = demoCount + 1;
 
-			if (demoCount % 50 == 0) {
+			if (demoCount % 40 == 0) {
 
 				int randint = rand() % 2;
 				if (randint == 0) {
@@ -700,9 +712,9 @@ void Asteroids::moveDemoShip() {
 				else if (randint == 1) {
 					mSpaceship->AddAngle(-1 * (rand() % 20));
 				}
-				mSpaceship->Thrust(rand() % 10);
+				mSpaceship->Thrust(rand() % 8);
 			}
-			if (demoCount % 200 == 0) {
+			if (demoCount % 100 == 0) {
 				mSpaceship->Shoot();
 			}
 		}
