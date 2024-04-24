@@ -93,8 +93,7 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 	string letter;
 	//switch statement to control what buttons do what in each state
 	switch (state)
-	{
-		//gameMode at the top as it requires the least latency
+	{ //gameMode at the top as it requires the least latency
 	case gameMode:
 		switch (key)
 		{
@@ -660,7 +659,6 @@ void Asteroids::cleanObjects() {
 // method that opens the leaderboard file and reads the contents into the leaderboard vector
 vector<leaderboardEntry> Asteroids::readLeaderboard(string leaderboardFile)
 {
-	
 	ifstream file;
 	file.open(leaderboardFile);
 	if (file.is_open()) {
